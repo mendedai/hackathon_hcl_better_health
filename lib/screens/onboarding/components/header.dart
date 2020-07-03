@@ -17,6 +17,7 @@ class Header extends StatelessWidget {
           size: 32.0,
         ),
         GestureDetector(
+          onTap: onSkip,
           child: Text(
             'Skip',
             style: Theme.of(context).textTheme.subtitle1.copyWith(

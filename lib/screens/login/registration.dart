@@ -4,14 +4,14 @@ import 'package:hcl_better_health/screens/login/components/clippers.dart';
 import 'package:hcl_better_health/screens/login/components/header.dart';
 import 'package:hcl_better_health/screens/login/components/login_registration_form.dart';
 
-class LoginScreen extends StatefulWidget {
-  static final String route = '/login';
+class RegistrationScreen extends StatefulWidget {
+  static final String route = '/registration';
 
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _RegistrationScreenState createState() => _RegistrationScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _RegistrationScreenState extends State<RegistrationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,7 +42,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 LoginHeader(),
                 Spacer(),
                 LoginAndRegistrationForm(
-                  isLogin: true,
+                  isLogin: false,
                 ),
               ],
             ),

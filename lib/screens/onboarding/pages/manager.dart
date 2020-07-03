@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:hcl_better_health/components/card_stack.dart';
 
-class OnboardingPages extends StatelessWidget {
+class OnboardingPageManager extends StatelessWidget {
   final int currentPage;
   final Widget lightCardChild;
   final Widget darkCardChild;
   final Widget textColumn;
 
-  OnboardingPages({
+  OnboardingPageManager({
     @required this.currentPage,
     @required this.lightCardChild,
     @required this.darkCardChild,
@@ -18,6 +18,7 @@ class OnboardingPages extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
+        // TODO animate the transition
         CardStack(
           pageNumber: currentPage,
           darkCardChild: darkCardChild,

@@ -1,0 +1,28 @@
+[
+  {
+    "description": "yoga",
+    "backgroundMusic": "https://jumprope-soundtracks.s3.amazonaws.com/relaxing/080_edm_house_tropical_relaxed-0-105BPM-d-major-3526129824057897000.mp3",
+    "scenes": [
+      {
+        "description": "cat cow",
+        "media": "https://jumprope-media-transformed-prod.s3.amazonaws.com/public/526FD255-8A6E-4843-98EA-F03FE13D3A75/mp4/526FD255-8A6E-4843-98EA-F03FE13D3A75_1080x1296_8_5Mb.mp4",
+        "duration": 5
+      },
+      {
+        "description": "bird dog",
+        "media": "https://jumprope-media-transformed-prod.s3.amazonaws.com/public/526FD255-8A6E-4843-98EA-F03FE13D3A75/mp4/526FD255-8A6E-4843-98EA-F03FE13D3A75_1080x1296_8_5Mb.mp4",
+        "duration": 5
+      },
+      {
+        "description": "cobra",
+        "media": "https://jumprope-media-transformed-prod.s3.amazonaws.com/public/526FD255-8A6E-4843-98EA-F03FE13D3A75/mp4/526FD255-8A6E-4843-98EA-F03FE13D3A75_1080x1296_8_5Mb.mp4",
+        "duration": 5
+      },
+      {
+        "description": "downward facing dog with mountain climbers",
+        "media": "https://jumprope-media-transformed-prod.s3.amazonaws.com/public/526FD255-8A6E-4843-98EA-F03FE13D3A75/mp4/526FD255-8A6E-4843-98EA-F03FE13D3A75_1080x1296_8_5Mb.mp4",
+        "duration": 5
+      }
+    ]
+  }
+]
