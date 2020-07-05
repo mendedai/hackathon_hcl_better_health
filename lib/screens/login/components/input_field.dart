@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:hcl_better_health/constants.dart';
 
 class CustomInputField extends StatelessWidget {
+  final TextEditingController _controller = new TextEditingController();
+
   final String label;
   final IconData prefixIcon;
   final bool obscureText;
   final Function onChanged;
   final TextInputType keyboardType;
+  final String text;
 
   // TODO add reveal obscured text option
 
@@ -16,11 +19,15 @@ class CustomInputField extends StatelessWidget {
     @required this.onChanged,
     this.obscureText,
     this.keyboardType,
-  });
+    this.text,
+  }) {
+    _controller.text = text;
+  }
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      controller: _controller,
       obscureText: obscureText,
       onChanged: onChanged,
       keyboardType: keyboardType,

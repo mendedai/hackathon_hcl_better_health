@@ -1,0 +1,80 @@
+{
+  "startAt": "Hello",
+  "lines": {
+    "Hello": {
+      "type": "text",
+      "content": "Hi, I'm Em",
+      "next": "Purpose"
+    },
+    "Purpose": {
+      "type": "text",
+      "content": "I'm here to help you through your physical therapy journey",
+      "next": "Profile Questions Start"
+    },
+    "Profile Questions Start": {
+      "type": "text",
+      "content": "But first I need to know a bit about you",
+      "next": "Question: Name"
+    },
+    "Question: Name": {
+      "type": "query",
+      "content": "What should I call you?",
+      "answerVariable": "name",
+      "next": "Question: Sex"
+    },
+    "Question: Sex": {
+      "type": "choice",
+      "content": "Are you male or female?",
+      "answerVariable": "sex",
+      "choices": {
+        "keepIt": true,
+        "values": [
+          {
+            "title": "male",
+            "value": "male"
+          },
+          {
+            "title": "female",
+            "value": "female"
+          }
+        ]
+      },
+      "next": "Question: Age"
+    },
+    "Question: Age": {
+      "type": "query",
+      "content": "and how old are you?",
+      "answerVariable": "age",
+      "next": "Question: Pain Location"
+    },
+    "Question: Pain Location": {
+      "type": "choice",
+      "content": "Where is your pain located?",
+      "answerVariable": "painLocation",
+      "choices": {
+        "keepIt": true,
+        "values": [
+          {
+            "title": "Lower Back",
+            "value": "Lower Back"
+          }
+        ]
+      },
+      "next": "Profile Questions End"
+    },
+    "Profile Questions End": {
+      "type": "choice",
+      "content": "Thank you. I have everything I need to get started. Let's continue when you are ready.",
+      "choices": {
+        "keepIt": true,
+        "values": [
+          {
+            "title": "I'm ready to continue",
+            "value": "continue"
+          }
+        ]
+      },
+      "end": true
+    }
+  }
+}

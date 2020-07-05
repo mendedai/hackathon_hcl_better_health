@@ -4,6 +4,7 @@ import 'package:hcl_better_health/screens/login/components/button.dart';
 import 'package:hcl_better_health/screens/login/components/input_field.dart';
 import 'package:hcl_better_health/screens/login/login.dart';
 import 'package:hcl_better_health/screens/login/registration.dart';
+import 'package:hcl_better_health/screens/questionnaire/questionnaire.dart';
 import 'package:hcl_better_health/screens/therapy/activity/activity.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -21,8 +22,8 @@ class LoginAndRegistrationForm extends StatelessWidget {
     var space = height > 650 ? kSpaceM : kSpaceS;
 
     final _auth = FirebaseAuth.instance;
-    String email;
-    String password;
+    String email = 'andre+1@gmail.com'; // TODO remove
+    String password = '123456'; // TODO remove
 
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: kPaddingL),
@@ -36,6 +37,7 @@ class LoginAndRegistrationForm extends StatelessWidget {
             onChanged: (val) {
               email = val.toString().trim();
             },
+            text: email,
           ),
           SizedBox(height: space),
           // TODO implement reveal obscured text button
@@ -46,6 +48,7 @@ class LoginAndRegistrationForm extends StatelessWidget {
             onChanged: (val) {
               password = val.toString().trim();
             },
+            text: password,
           ),
           SizedBox(height: space),
           CustomButton(
@@ -67,7 +70,8 @@ class LoginAndRegistrationForm extends StatelessWidget {
                   );
                 }
                 if (user != null) {
-                  Navigator.pushNamed(context, TherapyActivityScreen.route);
+                  // Navigator.pushNamed(context, TherapyActivityScreen.route);
+                  Navigator.pushNamed(context, QuestionnaireScreen.route);
                 }
               } catch (e) {
                 print(e);

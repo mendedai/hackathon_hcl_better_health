@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hcl_better_health/screens/login/login.dart';
 import 'package:hcl_better_health/screens/login/registration.dart';
 import 'package:hcl_better_health/screens/onboarding/onboarding.dart';
+import 'package:hcl_better_health/screens/questionnaire/questionnaire.dart';
 import 'package:hcl_better_health/screens/therapy/activity/activity.dart';
 
 class App extends StatelessWidget {
@@ -27,6 +28,9 @@ class App extends StatelessWidget {
           }),
           TherapyActivityScreen.route: MaterialPageRoute(builder: (context) {
             return TherapyActivityScreen();
+          }),
+          QuestionnaireScreen.route: MaterialPageRoute(builder: (context) {
+            return QuestionnaireScreen();
           }),
         };
 
