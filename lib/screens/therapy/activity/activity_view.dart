@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:story_view/story_view.dart';
+import 'package:story_view/controller/story_controller.dart';
 
-class TherapyActivityController extends StatefulWidget {
+class TherapyActivityView extends StatefulWidget {
   final List activities;
 
-  TherapyActivityController({this.activities});
+  TherapyActivityView({this.activities});
 
   @override
-  _TherapyActivityControllerState createState() =>
-      _TherapyActivityControllerState();
+  _TherapyActivityViewState createState() => _TherapyActivityViewState();
 }
 
-class _TherapyActivityControllerState extends State<TherapyActivityController> {
+class _TherapyActivityViewState extends State<TherapyActivityView> {
   final StoryController controller = StoryController();
   List<StoryItem> storyItems = [];
 
@@ -39,21 +39,37 @@ class _TherapyActivityControllerState extends State<TherapyActivityController> {
 
   @override
   Widget build(BuildContext context) {
-    return StoryView(
+    StoryView storyView = StoryView(
       storyItems: storyItems,
       controller: controller,
       onComplete: () {
         print('Story completed');
       },
-      onVerticalSwipeComplete: (v) {
+      onVerticalSwipeComplete: (v, storyItem) {
         print('onVerticalSwipeComplete $v');
         if (v == Direction.down) {
           print('onVerticalSwipeComplete v == Direction.down');
+        }
+
+        if (v == Direction.up) {
+          print('onVerticalSwipeComplete v == Direction.up');
         }
       },
       onStoryShow: (s) {
         print('Showing a story $s');
       },
     );
+
+    storyView.controller.playbackNotifier.listen((PlaybackState val) {
+      if (val == PlaybackState.pause) {
+        // TODO open information screens
+        print('playback paused');
+      } else if (val == PlaybackState.play) {
+        // TODO close information screens
+        print('playback playing');
+      }
+    });
+
+    return storyView;
   }
 }

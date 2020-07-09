@@ -354,8 +354,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: HEAD
-      resolved-ref: "6518a9cbb9f47d3c882875ad0d0cd5cd3dbe2ba8"
+      ref: "feat/change-gesture-handling"
+      resolved-ref: "17af7e99c998e730324e5c4da59f97f8f628adba"
       url: "git://github.com/mendedai/story_view.git"
     source: git
     version: "0.12.3"

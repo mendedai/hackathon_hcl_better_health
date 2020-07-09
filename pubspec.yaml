@@ -31,6 +31,7 @@ dependencies:
   story_view:
     git:
       url: git://github.com/mendedai/story_view.git
+      ref: feat/change-gesture-handling
   firebase_core: ^0.4.5
   cloud_firestore: ^0.13.7
   firebase_auth: ^0.16.1

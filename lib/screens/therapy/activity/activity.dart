@@ -2,7 +2,8 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:hcl_better_health/screens/therapy/activity/activity_controller.dart';
+
+import 'activity_view.dart';
 
 enum MediaType { image, video, text }
 
@@ -52,27 +53,37 @@ class TherapyActivityScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: FutureBuilder(
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return TherapyActivityController(
-                activities: snapshot.data,
-              );
-            }
+        child: Column(
+          children: [
+            Expanded(
+              child: FutureBuilder(
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return TherapyActivityView(
+                      activities: snapshot.data,
+                    );
+                  }
 
-            if (snapshot.hasError) {
-              print('${snapshot.error}');
-            }
+                  if (snapshot.hasError) {
+                    print('${snapshot.error}');
+                  }
 
-            return Center(
-              child: SizedBox(
-                width: 40,
-                height: 40,
-                child: CircularProgressIndicator(),
+                  return Center(
+                    child: SizedBox(
+                      width: 40,
+                      height: 40,
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
+                },
+                future: getMovements(),
               ),
-            );
-          },
-          future: getMovements(),
+            ),
+            Container(
+              height: 100.0,
+              color: Colors.white,
+            )
+          ],
         ),
       ),
     );
