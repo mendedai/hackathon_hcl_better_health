@@ -36,6 +36,7 @@ dependencies:
   cloud_firestore: ^0.13.7
   firebase_auth: ^0.16.1
   dash_chat: ^1.1.11
+  sliding_up_panel: ^1.0.2
 
 dev_dependencies:
   flutter_test:
