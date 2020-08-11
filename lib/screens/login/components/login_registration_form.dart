@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hcl_better_health/constants.dart';
+import 'package:hcl_better_health/screens/dashboard/dashboard.dart';
 import 'package:hcl_better_health/screens/login/components/button.dart';
 import 'package:hcl_better_health/screens/login/components/input_field.dart';
 import 'package:hcl_better_health/screens/login/login.dart';
@@ -70,8 +71,8 @@ class LoginAndRegistrationForm extends StatelessWidget {
                   );
                 }
                 if (user != null) {
-                  // Navigator.pushNamed(context, TherapyActivityScreen.route);
-                  Navigator.pushNamed(context, QuestionnaireScreen.route);
+                  Navigator.pushNamed(context, DashboardScreen.route);
+                  // Navigator.pushNamed(context, QuestionnaireScreen.route);
                 }
               } catch (e) {
                 print(e);

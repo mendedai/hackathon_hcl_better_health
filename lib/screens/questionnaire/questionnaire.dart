@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer' as dev;
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dash_chat/dash_chat.dart';
@@ -7,10 +6,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:hcl_better_health/bot/bot.dart';
+import 'package:hcl_better_health/constants.dart';
 import 'package:hcl_better_health/screens/therapy/activity/activity.dart';
+import 'package:hcl_better_health/screens/therapy/therapy.dart';
 
 class QuestionnaireScreen extends StatefulWidget {
-  static final String route = '/questionnaire';
+  static final String route = 'questionnaire';
 
   @override
   _QuestionnaireScreenState createState() => _QuestionnaireScreenState();
@@ -94,10 +95,28 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: kLightGrey,
       appBar: AppBar(
-        title: Text('Chat App'),
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: kBlack,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        title: Icon(
+          // Icons.chat_bubble_outline,
+          Icons.question_answer,
+          size: 26,
+          color: kBlack,
+        ),
+        backgroundColor: Colors.white,
+        elevation: 0,
       ),
       body: SafeArea(
+        bottom: false,
         child: StreamBuilder(
           stream: _firestore.collection('messages').snapshots(),
           builder: (context, snapshot) {
@@ -116,9 +135,10 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
               List<DocumentSnapshot> items = snapshot.data.documents;
               var messages =
                   items.map((i) => ChatMessage.fromJson(i.data)).toList();
+
               return DashChat(
                 key: _chatViewKey,
-                inverted: false,
+                messages: messages,
                 onSend: (message) {
                   waitForUserResponse = false;
                   return postMessage(message);
@@ -126,36 +146,96 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
                 sendOnEnter: true,
                 textInputAction: TextInputAction.send,
                 user: user,
-                inputDecoration:
-                    InputDecoration.collapsed(hintText: "Add message here..."),
+                // remove the avatar containers
+                avatarBuilder: (user) => Container(),
+                // remove the scroll to bottom button
+                scrollToBottomWidget: () => Container(),
+                messagePadding: EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 16,
+                ),
+                messageContainerPadding: EdgeInsets.symmetric(
+                  horizontal: 0,
+                  vertical: 2,
+                ),
+                messageDecorationBuilder: (ChatMessage msg, bool isUser) {
+                  return BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      topLeft:
+                          isUser ? Radius.circular(15) : Radius.circular(3),
+                      topRight:
+                          isUser ? Radius.circular(3) : Radius.circular(15),
+                      bottomRight: Radius.circular(15),
+                      bottomLeft: Radius.circular(15),
+                    ),
+                    color: msg.user.containerColor != null
+                        ? msg.user.containerColor
+                        : isUser
+                            ? Theme.of(context).accentColor
+                            : Color.fromRGBO(225, 225, 225, 1),
+                  );
+                },
+                messageTimeBuilder: (time, [message]) {
+                  return Container();
+                },
+                inputToolbarPadding: EdgeInsets.only(
+                  left: 20,
+                  right: 20,
+                  top: 16,
+                  bottom: 40,
+                ),
+                inputDecoration: InputDecoration(
+                  // icon: null,
+                  hintText: "Answer here...",
+                  fillColor: kLightGrey,
+                  filled: true,
+                  contentPadding: EdgeInsets.symmetric(
+                    vertical: 8,
+                    horizontal: 16,
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+                inputMaxLines: 5,
+                inputTextStyle: TextStyle(fontSize: 14.0),
+                inputContainerStyle: BoxDecoration(
+                  color: Colors.white,
+                  border: Border(
+                    top: BorderSide(
+                      color: kLightGrey,
+                    ),
+                  ),
+                ),
                 dateFormat: DateFormat('yyyy-MMM-dd'),
                 timeFormat: DateFormat('HH:mm'),
-                messages: messages,
-                showUserAvatar: false,
-                showAvatarForEveryMessage: false,
                 scrollToBottom: true,
-                onPressAvatar: (ChatUser user) {
-                  print("OnPressAvatar: ${user.name}");
+                quickReplyPadding: EdgeInsets.all(10),
+                quickReplyBuilder: (reply) {
+                  return Container(
+                    margin: EdgeInsets.symmetric(horizontal: 5, vertical: 0),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).accentColor,
+                      border: Border.all(
+                          width: 1.0, color: Theme.of(context).accentColor),
+                      borderRadius: BorderRadius.circular(30.0),
+                    ),
+                    child: Text(
+                      reply.title,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14.0,
+                      ),
+                    ),
+                  );
                 },
-                onLongPressAvatar: (ChatUser user) {
-                  print("OnLongPressAvatar: ${user.name}");
-                },
-                inputMaxLines: 5,
-                messageContainerPadding: EdgeInsets.only(left: 5.0, right: 5.0),
-                alwaysShowSend: true,
-                inputTextStyle: TextStyle(fontSize: 16.0),
-                inputContainerStyle: BoxDecoration(
-                  border: Border.all(width: 0.0),
-                  color: Colors.white,
-                ),
-                // quickReplyBuilder: (reply) {
-                //   dev.debugger();
-                //   return Container();
-                // },
                 onQuickReply: (Reply reply) {
                   waitForUserResponse = false;
                   if (_bot.done) {
-                    Navigator.pushNamed(context, TherapyActivityScreen.route);
+                    Navigator.pushNamed(context, TherapyScreen.route);
                   } else {
                     setState(() {
                       postMessage(
