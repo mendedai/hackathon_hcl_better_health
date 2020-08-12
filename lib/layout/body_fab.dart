@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hcl_better_health/layout/fab_speed_dial.dart';
 import 'package:hcl_better_health/screens/discover/feed_screen.dart';
-import 'package:hcl_better_health/screens/discover/tittok_screen.dart';
 import 'package:hcl_better_health/screens/insights/insight_screen.dart';
 
 class BodyFab extends StatelessWidget {
@@ -25,12 +24,7 @@ class BodyFab extends StatelessWidget {
         FabSpeedDialItem(
           icon: Icon(Icons.bookmark_border),
           label: 'Log an activity',
-          onPressed: () {
-            Navigator.pushNamed(
-              context,
-              WebViewExample.route,
-            );
-          },
+          onPressed: () {},
         ),
         FabSpeedDialItem(
           icon: Icon(Icons.graphic_eq),

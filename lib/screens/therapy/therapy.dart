@@ -69,74 +69,77 @@ class _TherapyScreenState extends State<TherapyScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.black,
       body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Expanded(
-              child: Container(),
-            ),
-            Container(
-              // color: Colors.blue,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    height: 175,
-                    width: 300,
-                    // color: Colors.blue,
-                    constraints: BoxConstraints(
-                      maxHeight: 200,
-                      maxWidth: 300,
-                    ),
-                    child: Stack(
-                      children: [
-                        Padding(
-                          // shift a little to the right to make it feel more centered
-                          padding: const EdgeInsets.only(left: 16.0),
-                          child: ScrollablePositionedList.builder(
-                            itemCount: items.length,
-                            itemBuilder: (context, index) =>
-                                _getListTile(items[index]),
-                            itemScrollController: itemScrollController,
-                            itemPositionsListener: itemPositionsListener,
-                          ),
-                        ),
-                        Container(
-                          // color: Colors.black12,
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                              colors: [
-                                Colors.white,
-                                Colors.white.withOpacity(0),
-                                Colors.white,
-                              ],
-                              stops: [0.1, 0.5, 0.9],
+        child: Container(
+          color: Colors.white,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Expanded(
+                child: Container(),
+              ),
+              Container(
+                // color: Colors.blue,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 175,
+                      width: 300,
+                      // color: Colors.blue,
+                      constraints: BoxConstraints(
+                        maxHeight: 200,
+                        maxWidth: 300,
+                      ),
+                      child: Stack(
+                        children: [
+                          Padding(
+                            // shift a little to the right to make it feel more centered
+                            padding: const EdgeInsets.only(left: 16.0),
+                            child: ScrollablePositionedList.builder(
+                              itemCount: items.length,
+                              itemBuilder: (context, index) =>
+                                  _getListTile(items[index]),
+                              itemScrollController: itemScrollController,
+                              itemPositionsListener: itemPositionsListener,
                             ),
                           ),
-                        ),
-                      ],
+                          Container(
+                            // color: Colors.black12,
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: [
+                                  Colors.white,
+                                  Colors.white.withOpacity(0),
+                                  Colors.white,
+                                ],
+                                stops: [0.1, 0.5, 0.9],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              child: Container(),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 10),
-              child: Center(
-                child: SpinKitDoubleBounce(
-                  color: Theme.of(context).primaryColor,
-                  size: 50,
+                  ],
                 ),
               ),
-            )
-          ],
+              Expanded(
+                child: Container(),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 10),
+                child: Center(
+                  child: SpinKitDoubleBounce(
+                    color: Theme.of(context).primaryColor,
+                    size: 50,
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

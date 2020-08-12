@@ -67,81 +67,71 @@ class TherapyActivityScreen extends StatelessWidget {
     );
   }
 
-  Widget getButtons() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        vertical: 20.0,
-        horizontal: 0.0,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          FlatButton(
-            padding: null,
-            onPressed: () {
-              print('sucks button');
-            },
-            child: CircleAvatar(
-              backgroundColor: Colors.lightBlueAccent,
-              radius: 30.0,
-              child: Icon(
-                Icons.thumb_down,
-                color: Colors.white,
-              ),
-            ),
-          ),
-          FlatButton(
-            onPressed: () {
-              print('like button');
-            },
-            child: CircleAvatar(
-              backgroundColor: Colors.lightBlueAccent,
-              radius: 30.0,
-              child: Icon(
-                Icons.thumb_up,
-                color: Colors.white,
-              ),
-            ),
-          ),
-          FlatButton(
-            onPressed: () {
-              print('make easier button');
-            },
-            child: CircleAvatar(
-              backgroundColor: Colors.lightBlueAccent,
-              radius: 30.0,
-              child: Icon(
-                Icons.do_not_disturb_on,
-                color: Colors.white,
-              ),
-            ),
-          ),
-          FlatButton(
-            onPressed: () {
-              print('make harder button');
-            },
-            child: CircleAvatar(
-              backgroundColor: Colors.lightBlueAccent,
-              radius: 30.0,
-              child: Icon(
-                Icons.add_circle,
-                color: Colors.white,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     const double kPanelMinHeight = 50.0;
+
+    Widget _getButton({IconData icon, Function onPressed}) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 5.0),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(30),
+          onTap: onPressed,
+          child: Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).primaryColor.withOpacity(0.8),
+              borderRadius: BorderRadius.circular(30),
+            ),
+            padding: EdgeInsets.all(12),
+            child: Icon(
+              icon,
+              color: Colors.white,
+              size: 16,
+            ),
+          ),
+        ),
+      );
+    }
+
+    Widget getButtons() {
+      return Material(
+        color: Colors.white.withOpacity(0),
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              _getButton(
+                icon: Icons.thumb_up,
+                onPressed: () {},
+              ),
+              _getButton(
+                icon: Icons.thumb_down,
+                onPressed: () {},
+              ),
+              SizedBox(
+                height: 30,
+              ),
+              _getButton(
+                icon: Icons.add,
+                onPressed: () {},
+              ),
+              _getButton(
+                icon: Icons.remove,
+                onPressed: () {},
+              ),
+            ],
+          ),
+        ),
+      );
+    }
 
     return Scaffold(
       backgroundColor: Colors.black,
       body: SlidingUpPanel(
         backdropEnabled: true,
+        parallaxEnabled: true,
+        parallaxOffset: 0.2,
         minHeight: kPanelMinHeight,
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(30.0),
@@ -171,6 +161,7 @@ class TherapyActivityScreen extends StatelessWidget {
               getActivityView(),
               Positioned(
                 bottom: 0,
+                right: 0,
                 child: Container(
                   // color: Colors.red,
                   child: getButtons(),

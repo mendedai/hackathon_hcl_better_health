@@ -21,41 +21,48 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // bottomNavigationBar: AppBottomNavBar(),
+        backgroundColor: Colors.black,
         bottomNavigationBar: BottomNavBar(currentRoute: DashboardScreen.route),
         extendBody: true,
-        body: Stack(
-          children: <Widget>[
-            Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage('assets/images/bg_gradient.jpg'),
-                  fit: BoxFit.none,
-                  alignment: Alignment.topLeft,
-                ),
-              ),
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-                child: Container(
-                  color: kLightGrey.withOpacity(0.8),
-                ),
-              ),
-            ),
-            BodyFab(
-              currentRoute: DashboardScreen.route,
-              child: ListView(
-                children: <Widget>[
-                  DashboardHeaderWidget(),
-                  SizedBox(
-                    height: 10.0,
+        body: SafeArea(
+          top: true,
+          bottom: false,
+          child: Stack(
+            children: <Widget>[
+              Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage('assets/images/bg_gradient.jpg'),
+                    fit: BoxFit.none,
+                    alignment: Alignment.topLeft,
                   ),
-                  QuestListWidget(),
-                  NextSessionWidget(),
-                  InsightsChartWidget(),
-                ],
+                ),
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                  child: Container(
+                    color: kLightGrey.withOpacity(0.8),
+                  ),
+                ),
               ),
-            ),
-          ],
+              BodyFab(
+                currentRoute: DashboardScreen.route,
+                child: ListView(
+                  children: <Widget>[
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    DashboardHeaderWidget(),
+                    SizedBox(
+                      height: 10.0,
+                    ),
+                    QuestListWidget(),
+                    NextSessionWidget(),
+                    InsightsChartWidget(),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ));
   }
 }

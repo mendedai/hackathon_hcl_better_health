@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "823814364898",
+    "firebase_url": "https://hcl-better-health-hackathon.firebaseio.com",
+    "project_id": "hcl-better-health-hackathon",
+    "storage_bucket": "hcl-better-health-hackathon.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:823814364898:android:7111291eb004940ee488bb",
+        "android_client_info": {
+          "package_name": "com.mendedlabs.hcl_better_health"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "823814364898-b87e6c2kmdik1nugdi19j1u1jfefmcqp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcLlZJm0-E_ZBANG8PHbCBI0IxciQezhw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "823814364898-b87e6c2kmdik1nugdi19j1u1jfefmcqp.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "823814364898-8hm2vh7i7dkljr0kfi0mg6764hn6aes9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.mendedlabs.hcl-better-health"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

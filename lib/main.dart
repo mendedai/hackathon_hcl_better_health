@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:hcl_better_health/constants.dart';
 import 'package:hcl_better_health/screens/dashboard/dashboard.dart';
 import 'package:hcl_better_health/screens/discover/feed_screen.dart';
-import 'package:hcl_better_health/screens/discover/tittok_screen.dart';
 import 'package:hcl_better_health/screens/insights/insight_screen.dart';
 import 'package:hcl_better_health/screens/login/login.dart';
 import 'package:hcl_better_health/screens/login/registration.dart';
@@ -22,6 +21,7 @@ class App extends StatelessWidget {
           primarySwatch: kPurpleSwatch,
         ),
       ),
+      themeMode: ThemeMode.light,
       initialRoute: OnboardingScreen.route,
       onGenerateRoute: (settings) {
         var routes = {
@@ -51,9 +51,6 @@ class App extends StatelessWidget {
           }),
           FeedScreen.route: MaterialPageRoute(builder: (context) {
             return FeedScreen();
-          }),
-          WebViewExample.route: MaterialPageRoute(builder: (context) {
-            return WebViewExample();
           }),
           InsightScreen.route: MaterialPageRoute(builder: (context) {
             return InsightScreen();

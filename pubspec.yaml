@@ -41,9 +41,6 @@ dependencies:
   provider: ^4.3.2
   flutter_spinkit: ^4.1.2+1
   scrollable_positioned_list: ^0.1.7
-  # image: ^2.1.12
-  webview_flutter: ^0.3.22+1 # TODO not needed right now
-  flutter_speed_dial_material_design: ^2.0.0 # TODO remove this
 
 dev_dependencies:
   flutter_test:
