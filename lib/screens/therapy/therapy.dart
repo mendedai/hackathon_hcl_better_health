@@ -47,14 +47,14 @@ class _TherapyScreenState extends State<TherapyScreen> {
   @override
   void initState() {
     super.initState();
-    Timer.periodic(Duration(seconds: 2), (Timer timer) {
+    Timer.periodic(Duration(seconds: 1), (Timer timer) {
       if (_currentIndex < items.length - 1) {
         _currentIndex++;
         setState(() {
           print(_currentIndex);
           itemScrollController.scrollTo(
               index: _currentIndex,
-              duration: Duration(seconds: 1),
+              duration: Duration(milliseconds: 350),
               curve: Curves.easeInOutCubic);
         });
 

@@ -95,7 +95,7 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: kLightGrey,
+      backgroundColor: Colors.black,
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(
@@ -116,146 +116,148 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
         elevation: 0,
       ),
       body: SafeArea(
-        bottom: false,
-        child: StreamBuilder(
-          stream: _firestore.collection('messages').snapshots(),
-          builder: (context, snapshot) {
-            if (!snapshot.hasData) {
-              return Center(
-                child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    Theme.of(context).primaryColor,
+        child: Container(
+          color: kLightGrey.withOpacity(0.8),
+          child: StreamBuilder(
+            stream: _firestore.collection('messages').snapshots(),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return Center(
+                  child: CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      Theme.of(context).primaryColor,
+                    ),
                   ),
-                ),
-              );
-            } else {
-              converse();
-              scrollConversation();
+                );
+              } else {
+                converse();
+                scrollConversation();
 
-              List<DocumentSnapshot> items = snapshot.data.documents;
-              var messages =
-                  items.map((i) => ChatMessage.fromJson(i.data)).toList();
+                List<DocumentSnapshot> items = snapshot.data.documents;
+                var messages =
+                    items.map((i) => ChatMessage.fromJson(i.data)).toList();
 
-              return DashChat(
-                key: _chatViewKey,
-                messages: messages,
-                onSend: (message) {
-                  waitForUserResponse = false;
-                  return postMessage(message);
-                },
-                sendOnEnter: true,
-                textInputAction: TextInputAction.send,
-                user: user,
-                // remove the avatar containers
-                avatarBuilder: (user) => Container(),
-                // remove the scroll to bottom button
-                scrollToBottomWidget: () => Container(),
-                messagePadding: EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 16,
-                ),
-                messageContainerPadding: EdgeInsets.symmetric(
-                  horizontal: 0,
-                  vertical: 2,
-                ),
-                messageDecorationBuilder: (ChatMessage msg, bool isUser) {
-                  return BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topLeft:
-                          isUser ? Radius.circular(15) : Radius.circular(3),
-                      topRight:
-                          isUser ? Radius.circular(3) : Radius.circular(15),
-                      bottomRight: Radius.circular(15),
-                      bottomLeft: Radius.circular(15),
+                return DashChat(
+                  key: _chatViewKey,
+                  messages: messages,
+                  onSend: (message) {
+                    waitForUserResponse = false;
+                    return postMessage(message);
+                  },
+                  sendOnEnter: true,
+                  textInputAction: TextInputAction.send,
+                  user: user,
+                  // remove the avatar containers
+                  avatarBuilder: (user) => Container(),
+                  // remove the scroll to bottom button
+                  scrollToBottomWidget: () => Container(),
+                  messagePadding: EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 16,
+                  ),
+                  messageContainerPadding: EdgeInsets.symmetric(
+                    horizontal: 0,
+                    vertical: 2,
+                  ),
+                  messageDecorationBuilder: (ChatMessage msg, bool isUser) {
+                    return BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                        topLeft:
+                            isUser ? Radius.circular(15) : Radius.circular(3),
+                        topRight:
+                            isUser ? Radius.circular(3) : Radius.circular(15),
+                        bottomRight: Radius.circular(15),
+                        bottomLeft: Radius.circular(15),
+                      ),
+                      color: msg.user.containerColor != null
+                          ? msg.user.containerColor
+                          : isUser
+                              ? Theme.of(context).accentColor
+                              : Color.fromRGBO(225, 225, 225, 1),
+                    );
+                  },
+                  messageTimeBuilder: (time, [message]) {
+                    return Container();
+                  },
+                  inputToolbarPadding: EdgeInsets.only(
+                    left: 20,
+                    right: 20,
+                    top: 16,
+                    bottom: 40,
+                  ),
+                  inputDecoration: InputDecoration(
+                    // icon: null,
+                    hintText: "Answer here...",
+                    fillColor: kLightGrey,
+                    filled: true,
+                    contentPadding: EdgeInsets.symmetric(
+                      vertical: 8,
+                      horizontal: 16,
                     ),
-                    color: msg.user.containerColor != null
-                        ? msg.user.containerColor
-                        : isUser
-                            ? Theme.of(context).accentColor
-                            : Color.fromRGBO(225, 225, 225, 1),
-                  );
-                },
-                messageTimeBuilder: (time, [message]) {
-                  return Container();
-                },
-                inputToolbarPadding: EdgeInsets.only(
-                  left: 20,
-                  right: 20,
-                  top: 16,
-                  bottom: 40,
-                ),
-                inputDecoration: InputDecoration(
-                  // icon: null,
-                  hintText: "Answer here...",
-                  fillColor: kLightGrey,
-                  filled: true,
-                  contentPadding: EdgeInsets.symmetric(
-                    vertical: 8,
-                    horizontal: 16,
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                    borderSide: BorderSide.none,
-                  ),
-                ),
-                inputMaxLines: 5,
-                inputTextStyle: TextStyle(fontSize: 14.0),
-                inputContainerStyle: BoxDecoration(
-                  color: Colors.white,
-                  border: Border(
-                    top: BorderSide(
-                      color: kLightGrey,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30),
+                      borderSide: BorderSide.none,
                     ),
                   ),
-                ),
-                dateFormat: DateFormat('yyyy-MMM-dd'),
-                timeFormat: DateFormat('HH:mm'),
-                scrollToBottom: true,
-                quickReplyPadding: EdgeInsets.all(10),
-                quickReplyBuilder: (reply) {
-                  return Container(
-                    margin: EdgeInsets.symmetric(horizontal: 5, vertical: 0),
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).accentColor,
-                      border: Border.all(
-                          width: 1.0, color: Theme.of(context).accentColor),
-                      borderRadius: BorderRadius.circular(30.0),
-                    ),
-                    child: Text(
-                      reply.title,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14.0,
+                  inputMaxLines: 5,
+                  inputTextStyle: TextStyle(fontSize: 14.0),
+                  inputContainerStyle: BoxDecoration(
+                    color: Colors.white,
+                    border: Border(
+                      top: BorderSide(
+                        color: kLightGrey,
                       ),
                     ),
-                  );
-                },
-                onQuickReply: (Reply reply) {
-                  waitForUserResponse = false;
-                  if (_bot.done) {
-                    Navigator.pushNamed(context, TherapyScreen.route);
-                  } else {
-                    setState(() {
-                      postMessage(
-                        ChatMessage(
-                          text: reply.value,
-                          createdAt: DateTime.now(),
-                          user: user,
+                  ),
+                  dateFormat: DateFormat('yyyy-MMM-dd'),
+                  timeFormat: DateFormat('HH:mm'),
+                  scrollToBottom: true,
+                  quickReplyPadding: EdgeInsets.all(10),
+                  quickReplyBuilder: (reply) {
+                    return Container(
+                      margin: EdgeInsets.symmetric(horizontal: 5, vertical: 0),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).accentColor,
+                        border: Border.all(
+                            width: 1.0, color: Theme.of(context).accentColor),
+                        borderRadius: BorderRadius.circular(30.0),
+                      ),
+                      child: Text(
+                        reply.title,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 14.0,
                         ),
-                      );
-                    });
-                  }
-                },
-                onLoadEarlier: () {
-                  print("loading...");
-                },
-                shouldShowLoadEarlier: false,
-                showTraillingBeforeSend: true,
-              );
-            }
-          },
+                      ),
+                    );
+                  },
+                  onQuickReply: (Reply reply) {
+                    waitForUserResponse = false;
+                    if (_bot.done) {
+                      Navigator.pushNamed(context, TherapyScreen.route);
+                    } else {
+                      setState(() {
+                        postMessage(
+                          ChatMessage(
+                            text: reply.value,
+                            createdAt: DateTime.now(),
+                            user: user,
+                          ),
+                        );
+                      });
+                    }
+                  },
+                  onLoadEarlier: () {
+                    print("loading...");
+                  },
+                  shouldShowLoadEarlier: false,
+                  showTraillingBeforeSend: true,
+                );
+              }
+            },
+          ),
         ),
       ),
     );
