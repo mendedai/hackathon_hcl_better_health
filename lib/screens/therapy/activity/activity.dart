@@ -20,21 +20,6 @@ class _TherapyActivityScreenState extends State<TherapyActivityScreen> {
   final _firestore = Firestore.instance;
 
   Future<List> getMovements() async {
-    // final foam0 =
-    //     await _firestore.collection('movements').document('foam-0').get();
-    // final foam1 =
-    //     await _firestore.collection('movements').document('foam-1').get();
-    // final foam2 =
-    //     await _firestore.collection('movements').document('foam-2').get();
-    // final shortArcQuad0 = await _firestore
-    //     .collection('movements')
-    //     .document('short-arc-quad-0')
-    //     .get();
-    // final towelSqueeze0 = await _firestore
-    //     .collection('movements')
-    //     .document('towel-squeeze-0')
-    //     .get();
-
     final data = await _firestore.collection('movements').getDocuments();
     return data.documents.toList();
   }
@@ -74,6 +59,18 @@ class _TherapyActivityScreenState extends State<TherapyActivityScreen> {
 
     return adjustments[movementId][difficultyAdjustment];
   }
+
+  String description = '''
+Step 1 - Get foam roller
+Step 2 - Set foam roller on the ground with the tailbone near one end and your head resting on the other.  Your spine should be pressing into the roam roller. Legs should be bent and shoulder width apart. Arms should be resting comfortably by your side
+Step 3 - engage abdominal muscles and hold for 2 minutes while maintaining a neutral spine.
+
+Easier Modification - take your feet and extend them further away from you while keeping them firmly planted on the ground.
+
+Harder Modification - Bring your hands up off the floor and bring your feet closer together until they are touching.
+
+Foam Roller balance v2 - Bring your feet together until they are touching.  Take your hands and rest them on your chest.  Close your eyes.  Hold for 2 minutes while engaging your abdomen.
+  ''';
 
   PageController _pageControllerNextExercise = PageController();
   PageController _pageControllerDifficultAdjust = PageController();
@@ -255,8 +252,14 @@ class _TherapyActivityScreenState extends State<TherapyActivityScreen> {
               ),
             ),
           ),
-          Center(
-            child: Text("This is the sliding Widget"),
+          SingleChildScrollView(
+            child: Center(
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                child: Text(description),
+              ),
+            ),
           ),
         ]),
         body: Padding(
