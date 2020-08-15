@@ -32,7 +32,7 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
 
   var i = 0;
 
-  void getCurrentUser() async {
+  Future<ChatUser> getCurrentUser() async {
     final _user = await _auth.currentUser();
     if (_user != null) {
       user = ChatUser(
@@ -40,6 +40,7 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
         uid: _user.uid,
       );
     }
+    return user;
   }
 
   void converse() async {
@@ -55,13 +56,13 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
       print('_bot.currentLineNumber ${_bot.currentLineNumber}');
       Timer(Duration(milliseconds: 600), () {
         ChatMessage msg = _bot.convertToChatMessage(line);
-        postMessage(msg);
+        postMessage(user, msg);
       });
     }
   }
 
   void scrollConversation() {
-    Timer(Duration(milliseconds: 300), () {
+    Timer.run(() {
       _chatViewKey.currentState.scrollController
         ..animateTo(
           _chatViewKey.currentState.scrollController.position.maxScrollExtent,
@@ -74,13 +75,14 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
   @override
   void initState() {
     super.initState();
-    getCurrentUser();
+    // getCurrentUser();
   }
 
-  Future<void> postMessage(ChatMessage message) async {
+  Future<void> postMessage(ChatUser user, ChatMessage message) async {
     var key = DateTime.now().millisecondsSinceEpoch.toString();
     print('sending new message "${message.text}" at $key');
-    var documentReference = _firestore.collection('messages').document(key);
+    var documentReference =
+        _firestore.collection('users/${user.uid}/messages').document(key);
 
     await Firestore.instance.runTransaction((transaction) async {
       await transaction.set(
@@ -95,7 +97,7 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(
@@ -117,147 +119,170 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
       ),
       body: SafeArea(
         child: Container(
-          color: kLightGrey.withOpacity(0.8),
-          child: StreamBuilder(
-            stream: _firestore.collection('messages').snapshots(),
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) {
-                return Center(
-                  child: CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(
-                      Theme.of(context).primaryColor,
-                    ),
-                  ),
-                );
-              } else {
-                converse();
-                scrollConversation();
-
-                List<DocumentSnapshot> items = snapshot.data.documents;
-                var messages =
-                    items.map((i) => ChatMessage.fromJson(i.data)).toList();
-
-                return DashChat(
-                  key: _chatViewKey,
-                  messages: messages,
-                  onSend: (message) {
-                    waitForUserResponse = false;
-                    return postMessage(message);
-                  },
-                  sendOnEnter: true,
-                  textInputAction: TextInputAction.send,
-                  user: user,
-                  // remove the avatar containers
-                  avatarBuilder: (user) => Container(),
-                  // remove the scroll to bottom button
-                  scrollToBottomWidget: () => Container(),
-                  messagePadding: EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 16,
-                  ),
-                  messageContainerPadding: EdgeInsets.symmetric(
-                    horizontal: 0,
-                    vertical: 2,
-                  ),
-                  messageDecorationBuilder: (ChatMessage msg, bool isUser) {
-                    return BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                        topLeft:
-                            isUser ? Radius.circular(15) : Radius.circular(3),
-                        topRight:
-                            isUser ? Radius.circular(3) : Radius.circular(15),
-                        bottomRight: Radius.circular(15),
-                        bottomLeft: Radius.circular(15),
-                      ),
-                      color: msg.user.containerColor != null
-                          ? msg.user.containerColor
-                          : isUser
-                              ? Theme.of(context).accentColor
-                              : Color.fromRGBO(225, 225, 225, 1),
-                    );
-                  },
-                  messageTimeBuilder: (time, [message]) {
-                    return Container();
-                  },
-                  inputToolbarPadding: EdgeInsets.only(
-                    left: 20,
-                    right: 20,
-                    top: 16,
-                    bottom: 40,
-                  ),
-                  inputDecoration: InputDecoration(
-                    // icon: null,
-                    hintText: "Answer here...",
-                    fillColor: kLightGrey,
-                    filled: true,
-                    contentPadding: EdgeInsets.symmetric(
-                      vertical: 8,
-                      horizontal: 16,
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30),
-                      borderSide: BorderSide.none,
-                    ),
-                  ),
-                  inputMaxLines: 5,
-                  inputTextStyle: TextStyle(fontSize: 14.0),
-                  inputContainerStyle: BoxDecoration(
-                    color: Colors.white,
-                    border: Border(
-                      top: BorderSide(
-                        color: kLightGrey,
-                      ),
-                    ),
-                  ),
-                  dateFormat: DateFormat('yyyy-MMM-dd'),
-                  timeFormat: DateFormat('HH:mm'),
-                  scrollToBottom: true,
-                  quickReplyPadding: EdgeInsets.all(10),
-                  quickReplyBuilder: (reply) {
-                    return Container(
-                      margin: EdgeInsets.symmetric(horizontal: 5, vertical: 0),
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).accentColor,
-                        border: Border.all(
-                            width: 1.0, color: Theme.of(context).accentColor),
-                        borderRadius: BorderRadius.circular(30.0),
-                      ),
-                      child: Text(
-                        reply.title,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 14.0,
-                        ),
-                      ),
-                    );
-                  },
-                  onQuickReply: (Reply reply) {
-                    waitForUserResponse = false;
-                    if (_bot.done) {
-                      Navigator.pushNamed(context, TherapyScreen.route);
+            color: kLightGrey,
+            child: FutureBuilder(
+              future: getCurrentUser(),
+              builder: (context, userSnapshot) {
+                if (!userSnapshot.hasData) {
+                  return getSpinner(context);
+                }
+                return StreamBuilder(
+                  stream: _firestore
+                      .collection('users/${user.uid}/messages')
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return getSpinner(context);
                     } else {
-                      setState(() {
-                        postMessage(
-                          ChatMessage(
-                            text: reply.value,
-                            createdAt: DateTime.now(),
-                            user: user,
+                      converse();
+                      scrollConversation();
+
+                      List<DocumentSnapshot> items = snapshot.data.documents;
+                      var messages = items
+                          .map((i) => ChatMessage.fromJson(i.data))
+                          .toList();
+
+                      return DashChat(
+                        key: _chatViewKey,
+                        messages: messages,
+                        onSend: (message) {
+                          waitForUserResponse = false;
+                          return postMessage(user, message);
+                        },
+                        sendOnEnter: true,
+                        textInputAction: TextInputAction.send,
+                        user: user,
+                        // remove the avatar containers
+                        avatarBuilder: (user) => Container(),
+                        // remove the scroll to bottom button
+                        scrollToBottomWidget: () => Container(),
+                        messagePadding: EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 16,
+                        ),
+                        messageContainerPadding: EdgeInsets.symmetric(
+                          horizontal: 0,
+                          vertical: 2,
+                        ),
+                        messageDecorationBuilder:
+                            (ChatMessage msg, bool isUser) {
+                          return BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                              topLeft: isUser
+                                  ? Radius.circular(15)
+                                  : Radius.circular(3),
+                              topRight: isUser
+                                  ? Radius.circular(3)
+                                  : Radius.circular(15),
+                              bottomRight: Radius.circular(15),
+                              bottomLeft: Radius.circular(15),
+                            ),
+                            color: msg.user.containerColor != null
+                                ? msg.user.containerColor
+                                : isUser
+                                    ? Theme.of(context).accentColor
+                                    : Theme.of(context)
+                                        .primaryColor
+                                        .withOpacity(0.1),
+                          );
+                        },
+                        messageTimeBuilder: (time, [message]) {
+                          return Container();
+                        },
+                        inputToolbarPadding: EdgeInsets.only(
+                          left: 20,
+                          right: 20,
+                          top: 16,
+                          bottom: 16,
+                        ),
+                        inputDecoration: InputDecoration(
+                          // icon: null,
+                          hintText: "Answer here...",
+                          fillColor: kLightGrey,
+                          filled: true,
+                          contentPadding: EdgeInsets.symmetric(
+                            vertical: 8,
+                            horizontal: 16,
                           ),
-                        );
-                      });
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30),
+                            borderSide: BorderSide.none,
+                          ),
+                        ),
+                        inputMaxLines: 5,
+                        inputTextStyle: TextStyle(fontSize: 14.0),
+                        inputContainerStyle: BoxDecoration(
+                          color: Colors.white,
+                          border: Border(
+                            top: BorderSide(
+                              color: kLightGrey,
+                            ),
+                          ),
+                        ),
+                        dateFormat: DateFormat('yyyy-MMM-dd'),
+                        timeFormat: DateFormat('HH:mm'),
+                        scrollToBottom: true,
+                        quickReplyPadding: EdgeInsets.all(10),
+                        quickReplyBuilder: (reply) {
+                          scrollConversation();
+                          return Container(
+                            margin: EdgeInsets.symmetric(
+                                horizontal: 5, vertical: 0),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 16.0, vertical: 8.0),
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).accentColor,
+                              border: Border.all(
+                                  width: 1.0,
+                                  color: Theme.of(context).accentColor),
+                              borderRadius: BorderRadius.circular(30.0),
+                            ),
+                            child: Text(
+                              reply.title,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 14.0,
+                              ),
+                            ),
+                          );
+                        },
+                        onQuickReply: (Reply reply) {
+                          waitForUserResponse = false;
+                          if (_bot.done) {
+                            Navigator.pushNamed(context, TherapyScreen.route);
+                          } else {
+                            setState(() {
+                              postMessage(
+                                user,
+                                ChatMessage(
+                                  text: reply.value,
+                                  createdAt: DateTime.now(),
+                                  user: user,
+                                ),
+                              );
+                            });
+                          }
+                        },
+                        onLoadEarlier: () {
+                          print("loading...");
+                        },
+                        shouldShowLoadEarlier: false,
+                        showTraillingBeforeSend: true,
+                      );
                     }
                   },
-                  onLoadEarlier: () {
-                    print("loading...");
-                  },
-                  shouldShowLoadEarlier: false,
-                  showTraillingBeforeSend: true,
                 );
-              }
-            },
-          ),
+              },
+            )),
+      ),
+    );
+  }
+
+  Center getSpinner(BuildContext context) {
+    return Center(
+      child: CircularProgressIndicator(
+        valueColor: AlwaysStoppedAnimation<Color>(
+          Theme.of(context).primaryColor,
         ),
       ),
     );

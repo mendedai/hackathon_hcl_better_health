@@ -14,7 +14,7 @@ class DashboardHeaderWidget extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text('Hi Aremy 👋',
+              Text('Hi Bill 👋',
                   style: TextStyles.body.copyWith(color: kColorTitle)),
               Text('Good evening',
                   style: TextStyles.pageTitle.copyWith(

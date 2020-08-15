@@ -58,7 +58,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           backdropEnabled: true,
           parallaxEnabled: true,
           minHeight: 180,
-          maxHeight: 600,
+          maxHeight: 420,
           controller: _controller,
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(panelBorderRadius),
@@ -82,15 +82,18 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               ),
             ),
           ),
-          panel: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Center(
-                    child: LoginRegistration(),
-                  ),
-                ]),
+          panel: GestureDetector(
+            behavior: HitTestBehavior.translucent,
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Center(
+                      child: LoginRegistration(),
+                    ),
+                  ]),
+            ),
           ),
           body: OnboardingContent(
             onPageChanged: _onPageChanged,

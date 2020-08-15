@@ -23,8 +23,10 @@ class LoginAndRegistrationForm extends StatelessWidget {
     var space = height > 650 ? kSpaceM : kSpaceS;
 
     final _auth = FirebaseAuth.instance;
-    String email = 'andre+1@gmail.com'; // TODO remove
-    String password = '123456'; // TODO remove
+    // String email = 'andre+1@gmail.com'; // TODO remove
+    // String password = '123456'; // TODO remove
+    String email;
+    String password;
 
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: kPaddingL),

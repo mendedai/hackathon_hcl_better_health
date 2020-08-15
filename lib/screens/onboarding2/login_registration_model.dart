@@ -14,4 +14,9 @@ class LoginRegistrationModel extends ChangeNotifier {
     _currentPage = 1;
     notifyListeners();
   }
+
+  void goToWelcome() {
+    _currentPage = 2;
+    notifyListeners();
+  }
 }

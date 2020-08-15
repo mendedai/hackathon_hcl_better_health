@@ -3,8 +3,6 @@ import 'package:hcl_better_health/constants.dart';
 import 'package:hcl_better_health/screens/dashboard/dashboard.dart';
 import 'package:hcl_better_health/screens/discover/feed_screen.dart';
 import 'package:hcl_better_health/screens/insights/insight_screen.dart';
-import 'package:hcl_better_health/screens/login/login.dart';
-import 'package:hcl_better_health/screens/login/registration.dart';
 import 'package:hcl_better_health/screens/onboarding2/onboarding_screen.dart';
 import 'package:hcl_better_health/screens/questionnaire/questionnaire.dart';
 import 'package:hcl_better_health/screens/therapy/activity/activity.dart';
@@ -31,12 +29,6 @@ class App extends StatelessWidget {
               screenHeight: screenHeight,
             );
           }),
-          // LoginScreen.route: MaterialPageRoute(builder: (context) {
-          //   return LoginScreen();
-          // }),
-          // RegistrationScreen.route: MaterialPageRoute(builder: (context) {
-          //   return RegistrationScreen();
-          // }),
           TherapyScreen.route: MaterialPageRoute(builder: (context) {
             return TherapyScreen();
           }),
